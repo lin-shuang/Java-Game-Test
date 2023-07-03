@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import javax.swing.JFrame;
 import com.graphics.Screen;
+import com.input.InputHandler;
 
 public class Display extends Canvas implements Runnable{
 
@@ -23,6 +24,7 @@ public class Display extends Canvas implements Runnable{
    private int[] pixels;
    private int fps;
    private Game game;
+   private InputHandler input;
 
    public void start() {
     if (running) return;
@@ -35,17 +37,23 @@ public class Display extends Canvas implements Runnable{
     }
    }
 
-   public Display(){
-    Dimension size = new Dimension(WIDTH, HEIGHT);
-    setPreferredSize(size);
-    setMinimumSize(size);
-    setMaximumSize(size);
+    public Display(){
+        Dimension size = new Dimension(WIDTH, HEIGHT);
+        setPreferredSize(size);
+        setMinimumSize(size);
+        setMaximumSize(size);
 
-    screen = new Screen(WIDTH, HEIGHT);
-    game = new Game();
-    img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-    pixels = ((DataBufferInt)img.getRaster().getDataBuffer()).getData();
-   }
+        screen = new Screen(WIDTH, HEIGHT);
+        game = new Game();
+        img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+        pixels = ((DataBufferInt)img.getRaster().getDataBuffer()).getData();
+   
+        input = new InputHandler();
+        addKeyListener(input);
+        addFocusListener(input);
+        addMouseListener(input);
+        addMouseMotionListener(input);
+    }
 
    public void run(){
     int frames = 0;
@@ -87,7 +95,7 @@ public class Display extends Canvas implements Runnable{
    }
    
    private void tick(){
-    game.tick();
+    game.tick(input.key);
    }
 
    private void render(){
