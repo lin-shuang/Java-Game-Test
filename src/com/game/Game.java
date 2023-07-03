@@ -18,7 +18,9 @@ public class Game {
         boolean moveB = key[KeyEvent.VK_S];
         boolean strafeR = key[KeyEvent.VK_D];
         boolean strafeL = key[KeyEvent.VK_A];
+        boolean ascend = key[KeyEvent.VK_SPACE];
+        boolean descend = key[KeyEvent.VK_SHIFT];
 
-        controller.tick(moveF, moveB, strafeR, strafeL);
+        controller.tick(moveF, moveB, strafeR, strafeL, ascend, descend);
     }
 }

@@ -21,15 +21,16 @@ public class Render3D extends Render{
         double sine = Math.sin(rotation);
         double move = game.controller.z;
         double strafe = game.controller.x;
+        double up = game.controller.y;
         double positionCeiling = 50.0;
         double positionFloor = 10.0;
 
         for(int y=0; y<height; y++){
 
             double yCeiling = (y + -height / 2.0) / height;
-            double z = positionFloor / yCeiling;
+            double z = (positionFloor + up) / yCeiling;
             if(yCeiling < 0){
-                z = positionCeiling / -yCeiling;
+                z = (positionCeiling - up) / -yCeiling;
             };
 
             if(z <= (renderDistance)){
@@ -41,7 +42,7 @@ public class Render3D extends Render{
                     int xPix = (int) (xx + strafe);
                     int yPix = (int) (yy + move);
                     zBuffer[x+y*width] = z;
-                    pixels[x+y*width] = Texture.floor.pixels[(xPix & 7) + (yPix & 7) * 16];
+                    pixels[x+y*width] = Texture.ceiling.pixels[(xPix & 7) + (yPix & 7) * 16];
                 }
             }
         }
