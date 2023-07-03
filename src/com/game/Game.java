@@ -18,9 +18,7 @@ public class Game {
         boolean moveB = key[KeyEvent.VK_S];
         boolean strafeR = key[KeyEvent.VK_D];
         boolean strafeL = key[KeyEvent.VK_A];
-        boolean rotateR = key[KeyEvent.VK_RIGHT];
-        boolean rotateL = key[KeyEvent.VK_LEFT];
 
-        controller.tick(moveF, moveB, strafeR, strafeL, rotateR, rotateL);
+        controller.tick(moveF, moveB, strafeR, strafeL);
     }
 }

@@ -11,6 +11,7 @@ import java.awt.event.MouseMotionListener;
 public class InputHandler implements KeyListener, FocusListener, MouseListener, MouseMotionListener{
 
     public boolean[] key = new boolean[68836];
+    public static int mouseX, mouseY;
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -38,6 +39,8 @@ public class InputHandler implements KeyListener, FocusListener, MouseListener, 
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        mouseX = e.getX();
+        mouseY = e.getY();
     }
 
     @Override

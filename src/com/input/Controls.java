@@ -2,8 +2,10 @@ package com.input;
 
 public class Controls {
     public double x, y, z, rotation, x1, y1, z1, rotation1;
+    public static boolean rotateR = false;
+    public static boolean rotateL = false;
 
-    public void tick(boolean moveF, boolean moveB, boolean strafeR, boolean strafeL, boolean rotateR, boolean rotateL){
+    public void tick(boolean moveF, boolean moveB, boolean strafeR, boolean strafeL){
         double rotationSpeed = 1.0;
         double walkSpeed = 1.0;
         double xMove = 0;

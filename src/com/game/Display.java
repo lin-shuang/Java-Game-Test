@@ -2,13 +2,17 @@ package com.game;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import javax.swing.JFrame;
 import com.graphics.Screen;
+import com.input.Controls;
 import com.input.InputHandler;
 
 public class Display extends Canvas implements Runnable{
@@ -25,6 +29,7 @@ public class Display extends Canvas implements Runnable{
    private int fps;
    private Game game;
    private InputHandler input;
+   private int newX, oldX, newY, oldY = 0;
 
    public void start() {
     if (running) return;
@@ -56,6 +61,8 @@ public class Display extends Canvas implements Runnable{
     }
 
    public void run(){
+    this.requestFocus();
+
     int frames = 0;
     double unprocessedSeconds = 0;
     long prevTime = System.nanoTime();
@@ -91,6 +98,27 @@ public class Display extends Canvas implements Runnable{
         }
         render();
         frames++;
+
+        //mouse movement catcher
+        newX = InputHandler.mouseX;
+        if(newX > oldX){
+            //debug System.out.println("Right");
+            Controls.rotateR = true;
+        } 
+        if(newX < oldX){
+            //debug System.out.println("Left");
+            Controls.rotateL = true;
+
+        } 
+        if(newX == oldX){
+            //debug System.out.println("Still");
+            Controls.rotateR = false;
+            Controls.rotateL = false;
+
+
+        } 
+        oldX = newX;
+        //debug System.out.println("X: " + InputHandler.mouseX + "Y: " + InputHandler.mouseY);
     }
    }
    
@@ -134,8 +162,8 @@ public class Display extends Canvas implements Runnable{
    }
 
     public static void main(String[] args) throws Exception{
-        System.out.println("Hello, World!");
-
+        BufferedImage cursor = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+        Cursor cursorBlank = Toolkit.getDefaultToolkit().createCustomCursor(cursor, new Point(0, 0), "cursorBlank");
         Display game = new Display();
         JFrame frame = new JFrame();
         frame.add(game);
@@ -144,6 +172,7 @@ public class Display extends Canvas implements Runnable{
         frame.setResizable(true);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
+        frame.getContentPane().setCursor(cursorBlank);
         frame.pack();
 
         System.out.println("Frame created...");
