@@ -4,8 +4,13 @@ import com.game.Game;
 
 public class Render3D extends Render{
 
+    //render distance
+    public double[] zBuffer;
+    public double renderDistance = 5000.00;
+    
     public Render3D(int width, int height) {
         super(width, height);
+        zBuffer = new double[width*height];
     }
 
     //render floor and ceiling
@@ -16,8 +21,8 @@ public class Render3D extends Render{
         double sine = Math.sin(rotation);
         double move = game.controller.z;
         double strafe = game.controller.x;
-        double positionCeiling = 50;
-        double positionFloor = 10;
+        double positionCeiling = 50.0;
+        double positionFloor = 10.0;
 
         for(int y=0; y<height; y++){
 
@@ -27,15 +32,39 @@ public class Render3D extends Render{
                 z = positionCeiling / -yCeiling;
             };
 
-            for(int x=0; x<width; x++){
-                double xDepth = (x - width / 2.0) / height;
-                xDepth *= z;
-                double xx = xDepth*cosine + z*sine;
-                double yy = z*cosine - xDepth*sine;
-                int xPix = (int) (xx + strafe);
-                int yPix = (int) (yy + move);
-                pixels[x+y*width] = ((xPix & 15)*16) | ((yPix & 15)*16) << 8;
+            if(z <= (renderDistance)){
+                for(int x=0; x<width; x++){
+                    double xDepth = (x - width / 2.0) / height;
+                    xDepth *= z;
+                    double xx = xDepth*cosine + z*sine;
+                    double yy = z*cosine - xDepth*sine;
+                    int xPix = (int) (xx + strafe);
+                    int yPix = (int) (yy + move);
+                    zBuffer[x+y*width] = z;
+                    pixels[x+y*width] = ((xPix & 15)*16) | ((yPix & 15)*16) << 8;
+                }
             }
+        }
+    }
+
+    //render distance
+    public void renderDistanceShader(){
+        for(int i=0; i<width*height; i++){
+            int brightness = (int) ((renderDistance) / zBuffer[i]);
+
+            //brightness limiter
+            if(brightness < 0){
+                brightness = 0;
+            }
+            else if(brightness > 255){
+                brightness = 255;
+            }
+
+            //color setter
+            int r = ((pixels[i] >> 16) & 0xff) * brightness >>> 8;
+            int g = ((pixels[i] >> 8) & 0xff) * brightness >>> 8;
+            int b = ((pixels[i]) & 0xff) * brightness >>> 8;
+            pixels[i] = r << 16 | g << 8 | b;
         }
     }
 }

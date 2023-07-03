@@ -27,6 +27,7 @@ public class Screen extends Render{
         }
       
         render.floor(game);
+        render.renderDistanceShader();
         draw(render,0 ,0);
     }
 }
