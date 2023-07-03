@@ -1,7 +1,7 @@
 package com.game;
 
 public class Game {
-    public int time;
+    public double time;
 
     public void tick(){
         time++;
