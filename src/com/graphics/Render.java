@@ -1,7 +1,5 @@
 package com.graphics;
 
-import com.game.Display;
-
 public class Render {
     public final int width;
     public final int height;
@@ -33,7 +31,6 @@ public class Render {
                     pixels[xPixels + yPixels * width] = alpha;
 
                 }
-                //debug System.out.println("x: " + x + "y: " + y);
             }
         }
     }

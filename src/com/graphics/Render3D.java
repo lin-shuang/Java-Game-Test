@@ -26,7 +26,6 @@ public class Render3D extends Render{
                 int xPix = (int) xx;
                 int yPix = (int) yy;
                 pixels[x+y*width] = ((xPix & 15)*16) | ((yPix & 15)*16) << 8;
-                //debug System.out.println(game.time);
             }
         }
     }
